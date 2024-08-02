@@ -34,3 +34,13 @@ export const getTodos = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteTodo = async (req, res, next) => {
+  try {
+    await Todo.findByIdAndDelete(req.params.todoId);
+
+    res.status(200).json("Todo has been deleted");
+  } catch (error) {
+    next(error);
+  }
+};
