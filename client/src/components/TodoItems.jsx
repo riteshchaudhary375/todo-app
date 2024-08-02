@@ -12,6 +12,7 @@ const TodoItems = ({ onDeleteClick }) => {
       {todoItems.map((item) => (
         <TodoItem
           key={item._id}
+          id={item._id}
           todoName={item.todoName}
           todoDate={item.dueDate}
           onDeleteClick={onDeleteClick}

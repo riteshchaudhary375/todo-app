@@ -27,9 +27,20 @@ const App = () => {
     setTodoItems(newTodoItems);
   }; */
 
-  const handleDeleteItem = (todoItemName) => {
-    const newTodoItems = todoItems.filter((item) => item.name !== todoItemName);
-    setTodoItems(newTodoItems);
+  const handleDeleteItem = (todoId) => {
+    /* const newTodoItems = todoItems.filter((item) => item.name !== todoItemName);
+    setTodoItems(newTodoItems); */
+
+    fetch(`/api/v1/deleteTodo/${todoId}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
