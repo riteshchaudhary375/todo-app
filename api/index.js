@@ -23,3 +23,10 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use("/api/v1", todoRoutes);
+
+// middleware to handle error
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error!";
+  return res.status(statusCode).json({ success: false, statusCode, message });
+});
