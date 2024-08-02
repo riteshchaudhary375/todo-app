@@ -2,6 +2,7 @@ import React from "react";
 import AppName from "./components/AppName";
 import AddTodo from "./components/AddTodo";
 import TodoItems from "./components/TodoItems";
+import Container from "./components/Container";
 import "./App.css";
 
 const App = () => {
@@ -17,11 +18,13 @@ const App = () => {
   ];
 
   return (
-    <center className="todoContainer">
-      <AppName />
-      <AddTodo />
-      <TodoItems todoItems={todoItems} />
-    </center>
+    <Container>
+      <center className="todoContainer">
+        <AppName />
+        <AddTodo />
+        <TodoItems todoItems={todoItems} />
+      </center>
+    </Container>
   );
 };
 
