@@ -22,3 +22,15 @@ export const postTodo = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getTodos = async (req, res, next) => {
+  try {
+    const todos = await Todo.find();
+
+    const totalTodos = await Todo.countDocuments();
+
+    res.status(200).json({ success: true, totalTodos, todos });
+  } catch (error) {
+    next(error);
+  }
+};
