@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppName from "./components/AppName";
 import AddTodo from "./components/AddTodo";
 import TodoItems from "./components/TodoItems";
@@ -20,6 +20,20 @@ const App = () => {
 
   // const [todoItems, setTodoItems] = useState(initialTodoItems);
   const [todoItems, setTodoItems] = useState([]);
+
+  const getTodos = async () => {
+    await fetch("/api/v1/getTodos")
+      .then((res) => res.json())
+      .then((data) => {
+        setTodoItems(data.todos);
+        // console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   const handleNewItem = (itemName, itemDueDate) => {
     // console.log(`New item added: ${itemName} on date ${itemDueDate}`);
