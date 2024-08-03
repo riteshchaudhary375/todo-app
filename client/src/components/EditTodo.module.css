@@ -1,0 +1,25 @@
+.editContainer {
+  width: 600px;
+  margin: 30px auto;
+  border: 1px solid black;
+  border-radius: 9px;
+  padding: 20px 7px;
+}
+
+.heading {
+  font-size: 27px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.button {
+  margin-top: 20px;
+}
+
+.inputSection{
+    padding-inline: 10px;
+}
+
+.editInput {
+  width: 100%;
+}

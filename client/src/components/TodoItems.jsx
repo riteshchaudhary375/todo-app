@@ -6,15 +6,14 @@ import { useContext } from "react";
 
 const TodoItems = ({ onDeleteClick }) => {
   const todoItems = useContext(TodoItemsContext);
+  // console.log(todoItems);
 
   return (
     <div className={styles.itemsContainer}>
       {todoItems.map((item) => (
         <TodoItem
           key={item._id}
-          id={item._id}
-          todoName={item.todoName}
-          todoDate={item.dueDate}
+          todoItem={item}
           onDeleteClick={onDeleteClick}
         />
       ))}

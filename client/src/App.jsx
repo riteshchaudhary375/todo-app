@@ -9,6 +9,7 @@ import "./App.css";
 
 const App = () => {
   const [todoItems, setTodoItems] = useState([]);
+  // console.log(todoItems);
 
   useEffect(() => {
     fetch("/api/v1/getTodos")
