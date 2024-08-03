@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import styles from "./AddTodo.module.css";
+import { RiCalendarTodoFill } from "react-icons/ri";
 
 const AddTodo = () => {
   // Using useState hook
@@ -77,8 +78,9 @@ const AddTodo = () => {
             type="button"
             className="btn btn-success buttonWidth"
             onClick={handleAddButtonClicked}
+            title="Add Todo"
           >
-            Add
+            <RiCalendarTodoFill className="iconSize" />
           </button>
         </div>
       </div>

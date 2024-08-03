@@ -1,7 +1,16 @@
 .marginRow {
-  margin: 10px 5px;
+  margin: 15px 5px;
+  /* background-color: red; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .buttonWidth {
-  min-width: 80px;
+  min-width: 90px;
+}
+
+.iconSize {
+  width: 20px;
+  height: 20px;
 }
