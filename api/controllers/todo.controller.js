@@ -67,3 +67,13 @@ export const updateTodo = async (req, res, next) => {
     next(error.message);
   }
 };
+
+export const getTodo = async (req, res, next) => {
+  try {
+    const singleTodo = await Todo.findById(req.params.todoId);
+
+    res.status(200).json(singleTodo);
+  } catch (error) {
+    next(error);
+  }
+};
