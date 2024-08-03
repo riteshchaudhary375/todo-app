@@ -36,16 +36,24 @@ const EditTodo = () => {
   };
 
   const onUpdateTodo = () => {
+    setTodoName("");
+    setDueDate("");
+
     // if form data is empty
-    if (Object.keys(todoName).length === 0) {
-      console.log("Todo-Name required");
+    if (
+      Object.keys(todoName).length === 0 ||
+      Object.keys(dueDate).length === 0
+    ) {
+      console.log(
+        "All fields required. So refresh page and fill-up both fields."
+      );
       return;
     }
 
-    if (Object.keys(dueDate).length === 0) {
+    /*  if (Object.keys(dueDate).length === 0) {
       console.log("Due-Date required");
       return;
-    }
+    } */
 
     fetch(`/api/v1/updateTodo/${todoId}`, {
       method: "PUT",
