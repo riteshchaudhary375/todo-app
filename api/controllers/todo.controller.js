@@ -44,3 +44,26 @@ export const deleteTodo = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateTodo = async (req, res, next) => {
+  if (!req.body.todoName || !req.body.dueDate) {
+    return next(errorHandler(400, "All input fields required"));
+  }
+
+  try {
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      req.params.todoId,
+      {
+        $set: {
+          todoName: req.body.todoName,
+          dueDate: req.body.dueDate,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(201).json(updatedTodo);
+  } catch (error) {
+    next(error.message);
+  }
+};
