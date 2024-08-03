@@ -11,7 +11,7 @@ const TodoItem = ({ todoItem, onDeleteClick }) => {
     <div className="container">
       <div className="row marginRow">
         <div className="col-6">{todoItem.todoName}</div>
-        <div className="col-4">{todoItem.todoDate}</div>
+        <div className="col-4">{todoItem.dueDate}</div>
         <div className={`col-2  ${styles.itemButton}`}>
           <Link to={`/edit-todo/${todoItem._id}`}>
             <button

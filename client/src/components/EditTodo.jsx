@@ -10,7 +10,7 @@ const EditTodo = () => {
   const { todoId } = useParams();
   // console.log(todoId);
 
-  const [todoData, setTodoData] = useState([]);
+  const [todoData, setTodoData] = useState("");
   // console.log(todoData);
 
   // fetching todo form api
