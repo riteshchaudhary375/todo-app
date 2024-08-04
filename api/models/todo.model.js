@@ -9,8 +9,8 @@ const todoSchema = new mongoose.Schema(
     },
     dueDate: {
       type: String,
-      required: true,
-      unique: true,
+      required: false,
+      unique: false,
     },
   },
   { timestamps: true }
