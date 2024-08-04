@@ -4,12 +4,12 @@ import { errorHandler } from "../utils/error.js";
 export const postTodo = async (req, res, next) => {
   const { todoName, dueDate } = req.body;
 
-  if (!todoName || !dueDate) {
+  if (!todoName) {
     /* return res
       .status(400)
       .json({ success: false, message: "All fields required" }); */
 
-    next(errorHandler(400, "All fields required"));
+    return next(errorHandler(400, "Todo name required"));
   }
 
   const newTodo = new Todo({ todoName, dueDate });
@@ -46,9 +46,9 @@ export const deleteTodo = async (req, res, next) => {
 };
 
 export const updateTodo = async (req, res, next) => {
-  if (!req.body.todoName || !req.body.dueDate) {
+  /*   if (!req.body.todoName || !req.body.dueDate) {
     return next(errorHandler(400, "All input fields required"));
-  }
+  } */
 
   try {
     const updatedTodo = await Todo.findByIdAndUpdate(
