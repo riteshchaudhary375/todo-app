@@ -14,3 +14,23 @@
   width: 20px;
   height: 20px;
 }
+
+.totalTodoAndcreateBtnDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: rgba(255, 0, 0, 0.207); */
+}
+
+.totalTodoAndcreateBtnDiv .badgeBtn {
+  cursor: text !important;
+}
+
+.totalTodoAndcreateBtnDiv .badgeBtn:hover {
+  background-color: #ffc107;
+}
+
+.totalTodoAndcreateBtnDiv span {
+  font-weight: 700;
+  margin-left: 5px;
+}
