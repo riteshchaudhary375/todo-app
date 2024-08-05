@@ -43,8 +43,10 @@ const TodoContextProvider = ({ children }) => {
     });
   };
 
+  /* 
+  // Method-1
+
   const addTodo = (name, date) => {
-    // console.log(`Data: ${name} ${date}`);
     dispatchTodoList({
       type: "ADD_TODO",
       payload: {
@@ -52,6 +54,15 @@ const TodoContextProvider = ({ children }) => {
         todoName: name,
         dueDate: date,
       },
+    });
+  }; 
+  */
+
+  // Method-2
+  const addTodo = (todo) => {
+    dispatchTodoList({
+      type: "ADD_TODO",
+      payload: todo,
     });
   };
 

@@ -16,10 +16,43 @@ const CreateTodo = () => {
     const name = todoNameElement.current.value;
     const date = dueDateElement.current.value;
 
-    addTodo(name, date);
-
     todoNameElement.current.value = "";
     dueDateElement.current.value = "";
+
+    /* 
+      // Method-1
+
+      fetch("/api/v1/postTodo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          todoName: name,
+          dueDate: date,
+        }),
+      })
+        .then((res) => res.json())
+        .then(console.log)
+        .catch((err) => {
+          console.log(err);
+        });
+
+      addTodo(name, date); 
+    */
+
+    // Method-2
+    fetch("/api/v1/postTodo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        todoName: name,
+        dueDate: date,
+      }),
+    })
+      .then((res) => res.json())
+      .then((todo) => addTodo(todo))
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
