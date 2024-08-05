@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import styles from "./TodoItem.module.css";
+import { TodoContext } from "../store/todo-items-store";
 
-const TodoItem = ({ todoItem, onDeleteClick }) => {
-  // console.log(todoItem);
+const TodoItem = ({ todoItem }) => {
+  const { deleteTodo } = useContext(TodoContext);
 
   return (
     <div className="container">
@@ -26,7 +27,7 @@ const TodoItem = ({ todoItem, onDeleteClick }) => {
           <button
             type="button"
             className="btn btn-outline-danger"
-            onClick={() => onDeleteClick(todoItem._id)}
+            onClick={() => deleteTodo(todoItem.id)}
             title="Delete Todo"
           >
             <MdDelete className={styles.iconSize} />

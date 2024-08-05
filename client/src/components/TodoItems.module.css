@@ -1,3 +1,16 @@
 .itemsContainer {
   text-align: left;
+  /* background-color: red; */
+}
+
+.tableHead {
+  /* background-color: rgba(0, 255, 255, 0.388); */
+  font-size: 20px;
+  font-weight: 600;
+  padding-left: 10px;
+}
+
+.horizontalLine {
+  margin-top: -15px;
+  color: rgba(0, 0, 0, 0.35);
 }
