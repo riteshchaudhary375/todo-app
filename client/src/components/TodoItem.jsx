@@ -5,16 +5,33 @@ import { FaEdit } from "react-icons/fa";
 import styles from "./TodoItem.module.css";
 import { TodoContext } from "../store/todo-items-store";
 
-const TodoItem = ({ todoItem }) => {
+const TodoItem = ({ id, name, date }) => {
   const { deleteTodo } = useContext(TodoContext);
+  // console.log(todoItem);
+
+  const handleDeleteButton = async (todoId) => {
+    try {
+      const res = await fetch(`/api/v1/deleteTodo/${todoId}`, {
+        method: "DELETE",
+      });
+      // .then(() => deleteTodo())
+      // .catch((err) => console.log(err));
+
+      // console.log(res);
+
+      deleteTodo(todoId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="container">
       <div className="row marginRow">
-        <div className="col-6">{todoItem.todoName}</div>
-        <div className="col-4">{todoItem.dueDate}</div>
+        <div className="col-6">{name}</div>
+        <div className="col-4">{date}</div>
         <div className={`col-2  ${styles.itemButton}`}>
-          <Link to={`/edit-todo/${todoItem._id}`}>
+          <Link to={`/edit-todo/${id}`}>
             <button
               type="button"
               className="btn btn-outline-secondary"
@@ -27,7 +44,7 @@ const TodoItem = ({ todoItem }) => {
           <button
             type="button"
             className="btn btn-outline-danger"
-            onClick={() => deleteTodo(todoItem.id)}
+            onClick={() => handleDeleteButton(id)}
             title="Delete Todo"
           >
             <MdDelete className={styles.iconSize} />

@@ -10,10 +10,12 @@ export const TodoContext = createContext({
 
 // Reducer Function
 const todoListReducer = (currTodoList, action) => {
+  // console.log(currTodoList);
+
   let newTodoList = currTodoList;
   if (action.type === "DELETE_TODO") {
     newTodoList = currTodoList.filter(
-      (item) => item.id !== action.payload.todoId
+      (item) => item._id !== action.payload.todoId
     );
   } else if (action.type === "ADD_TODO") {
     newTodoList = [action.payload, ...currTodoList];
@@ -66,6 +68,7 @@ const TodoContextProvider = ({ children }) => {
     });
   };
 
+  // Delete todo function
   const deleteTodo = (todoId) => {
     dispatchTodoList({
       type: "DELETE_TODO",

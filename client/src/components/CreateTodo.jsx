@@ -1,11 +1,12 @@
 import React, { useContext, useRef } from "react";
 import styles from "./CreateTodo.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "./Container";
 import { TodoContext } from "../store/todo-items-store";
 
 const CreateTodo = () => {
   const { addTodo } = useContext(TodoContext);
+  const navigate = useNavigate();
 
   // Using useRefHook
   const todoNameElement = useRef();
@@ -49,7 +50,10 @@ const CreateTodo = () => {
       }),
     })
       .then((res) => res.json())
-      .then((todo) => addTodo(todo))
+      .then((todo) => {
+        addTodo(todo);
+        navigate("/");
+      })
       .catch((err) => {
         console.log(err);
       });

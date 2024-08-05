@@ -47,7 +47,12 @@ const TodoItems = () => {
       {!fetching && todoList.length === 0 && <WelcomeMessage />}
       {!fetching &&
         todoList.map((item) => (
-          <TodoItem key={item.todoName} todoItem={item} />
+          <TodoItem
+            key={item._id}
+            id={item._id}
+            name={item.todoName}
+            date={item.dueDate}
+          />
         ))}
     </div>
   );
