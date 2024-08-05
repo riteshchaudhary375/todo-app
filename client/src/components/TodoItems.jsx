@@ -27,7 +27,7 @@ const TodoItems = () => {
       })
       .catch((err) => console.log(err));
 
-    // Clean up useEffect
+    // The useEffect Hook Cleanup
     // it will clean up any calls in backend like, timer, api calling,...
     // like clean up 'clock' while moving another component.
     return () => {
