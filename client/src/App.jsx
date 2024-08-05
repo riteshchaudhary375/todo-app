@@ -13,7 +13,6 @@ const App = () => {
         <AppName />
         <TodoNav />
         <TodoItems />
-        <WelcomeMessage />
       </center>
     </Container>
   );
