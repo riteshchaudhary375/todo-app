@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TodoItem from "./TodoItem";
 import styles from "./TodoItems.module.css";
 import { TodoContext } from "../store/todo-items-store";
 import { useContext } from "react";
 
 const TodoItems = () => {
-  const { todoList } = useContext(TodoContext);
+  const { todoList, addInitialTodos } = useContext(TodoContext);
   // console.log(todoList);
+
+  useEffect(() => {
+    fetch("/api/v1/getTodos")
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialTodos(data.todos);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={styles.itemsContainer}>
