@@ -1,14 +1,14 @@
 import React from "react";
 import styles from "./WelcomeMessage.module.css";
-import { TodoItemsContext } from "../store/todo-items-store";
+import { TodoContext } from "../store/todo-items-store";
 import { useContext } from "react";
 
 const WelcomeMessage = () => {
-  const todoItems = useContext(TodoItemsContext);
+  const { todoList } = useContext(TodoContext);
 
   return (
-    todoItems.length === 0 && (
-      <p className={styles.welcomeMessage}>Hello, let's create a new todo...</p>
+    todoList.length === 0 && (
+      <p className={styles.welcomeMessage}>No todo created...</p>
     )
   );
 };
