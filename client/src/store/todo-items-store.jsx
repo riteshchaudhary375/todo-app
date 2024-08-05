@@ -6,6 +6,7 @@ export const TodoContext = createContext({
   addInitialTodos: () => {},
   addTodo: () => {},
   deleteTodo: () => {},
+  updateTodo: () => {},
 });
 
 // Reducer Function
@@ -18,9 +19,11 @@ const todoListReducer = (currTodoList, action) => {
       (item) => item._id !== action.payload.todoId
     );
   } else if (action.type === "ADD_TODO") {
-    newTodoList = [action.payload, ...currTodoList];
+    newTodoList = [...currTodoList, action.payload];
   } else if (action.type === "ADD_INITIAL_TODOS") {
     newTodoList = action.payload.todos;
+  } else if (action.type === "UPDATE_TODO") {
+    newTodoList = [...currTodoList, action.payload];
   }
   return newTodoList;
 };
@@ -78,9 +81,19 @@ const TodoContextProvider = ({ children }) => {
     });
   };
 
+  // Edit todo function
+  const updateTodo = (updatedTodoItem) => {
+    dispatchTodoList({
+      type: "UPDATE_TODO",
+      payload: {
+        updatedTodoItem,
+      },
+    });
+  };
+
   return (
     <TodoContext.Provider
-      value={{ todoList, addInitialTodos, addTodo, deleteTodo }}
+      value={{ todoList, addInitialTodos, addTodo, deleteTodo, updateTodo }}
     >
       {children}
     </TodoContext.Provider>

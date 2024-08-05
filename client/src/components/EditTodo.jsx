@@ -1,71 +1,75 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./EditTodo.module.css";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import Container from "./Container";
+import { TodoContext } from "../store/todo-items-store";
 
 const EditTodo = () => {
+  const { updateTodo } = useContext(TodoContext);
+
   // Using useState hook
-  const [todoName, setTodoName] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [itemDate, setItemDate] = useState("");
   const navigate = useNavigate();
   const { todoId } = useParams();
   // console.log(todoId);
 
-  const [todoData, setTodoData] = useState("");
-  // console.log(todoData);
+  const [fetchedValue, setFetchedValue] = useState("");
+  // console.log(fetchedValue);
 
   // fetching todo form api
   useEffect(() => {
-    fetch(`/api/v1/getTodo/${todoId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        setTodoData(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    try {
+      const fetchTodo = async () => {
+        await fetch(`/api/v1/getTodo/${todoId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            // console.log(data);
+            setFetchedValue(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      fetchTodo();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [todoId]);
 
+  // for update todo
   const handleNameChange = (e) => {
     // console.log(e.target.value);
-    setTodoName(e.target.value);
+    // setItemName({ ...fetchedValue, todoName: e.target.value });
+    setItemName(e.target.value);
   };
-
   const handleDateChange = (e) => {
-    setDueDate(e.target.value);
+    // setItemDate({ ...fetchedValue, dueDate: e.target.value });
+    setItemDate(e.target.value);
   };
 
-  const onUpdateTodo = () => {
-    setTodoName("");
-    setDueDate("");
+  // Update API
+  const handleUpdateButtonSubmit = async (e) => {
+    e.preventDefault();
 
     // if form data is empty
-    if (
-      Object.keys(todoName).length === 0 ||
-      Object.keys(dueDate).length === 0
-    ) {
-      console.log(
-        "All fields required. So refresh page and fill-up both fields."
-      );
+    if (Object.keys(itemName).length === 0) {
+      console.log("No change made on todo name");
       return;
     }
 
-    /*  if (Object.keys(dueDate).length === 0) {
-      console.log("Due-Date required");
-      return;
-    } */
-
-    fetch(`/api/v1/updateTodo/${todoId}`, {
+    await fetch(`/api/v1/updateTodo/${todoId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        todoName,
-        dueDate,
+        todoName: itemName,
+        dueDate: itemDate,
       }),
     })
       .then((res) => res.json())
-      .then((todo) => {
+      .then((updatedTodoItem) => {
         // console.log(todo);
+        updateTodo(updatedTodoItem);
         navigate("/");
       })
       .catch((err) => {
@@ -73,46 +77,45 @@ const EditTodo = () => {
       });
   };
 
-  const handleUpdateButtonClicked = () => {
-    onUpdateTodo(todoName, dueDate);
-    setTodoName("");
-    setDueDate("");
-  };
-
   return (
-    <div className={`${styles.editContainer} text-center`}>
-      <h1 className={styles.heading}>Update Todo</h1>
+    <Container>
+      <form className="text-center" onSubmit={handleUpdateButtonSubmit}>
+        <h1 className={styles.heading}>Update Todo</h1>
 
-      <div className={`row ${styles.inputSection}`}>
-        <div className="col-8">
-          <input
-            className={styles.editInput}
-            type="text"
-            placeholder="Enter todo..."
-            defaultValue={todoData.todoName}
-            onChange={handleNameChange}
-          />
+        <div className={`row ${styles.inputSection}`}>
+          <div className="col-8">
+            <input
+              className={styles.editInput}
+              type="text"
+              placeholder="Enter todo..."
+              defaultValue={fetchedValue.todoName}
+              onChange={handleNameChange}
+              required
+            />
+          </div>
+          <div className="col-4">
+            <input
+              className={styles.editInput}
+              type="date"
+              defaultValue={fetchedValue.dueDate}
+              onChange={handleDateChange}
+            />
+          </div>
         </div>
-        <div className="col-4">
-          <input
-            className={styles.editInput}
-            type="date"
-            defaultValue={todoData.dueDate}
-            onChange={handleDateChange}
-          />
-        </div>
-      </div>
 
-      <div>
-        <button
-          type="button"
-          className={`btn btn-success ${styles.button}`}
-          onClick={handleUpdateButtonClicked}
-        >
-          Update
-        </button>
-      </div>
-    </div>
+        <div className={styles.buttonDiv}>
+          <Link to="/">Back</Link>
+
+          <button
+            type="submit"
+            className={`btn btn-success ${styles.button}`}
+            title="Update Todo"
+          >
+            Update
+          </button>
+        </div>
+      </form>
+    </Container>
   );
 };
 
