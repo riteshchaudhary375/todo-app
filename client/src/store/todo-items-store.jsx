@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 // Create Context APi
 export const TodoContext = createContext({
@@ -7,6 +7,8 @@ export const TodoContext = createContext({
   addTodo: () => {},
   deleteTodo: () => {},
   updateTodo: () => {},
+  error: "",
+  setError: "",
 });
 
 // Reducer Function
@@ -37,7 +39,7 @@ const TodoContextProvider = ({ children }) => {
     []
   );
 
-  // const [fetching, setFetching] = useState(false);
+  const [error, setError] = useState("");
 
   const addInitialTodos = (todos) => {
     dispatchTodoList({
@@ -93,7 +95,15 @@ const TodoContextProvider = ({ children }) => {
 
   return (
     <TodoContext.Provider
-      value={{ todoList, addInitialTodos, addTodo, deleteTodo, updateTodo }}
+      value={{
+        todoList,
+        addInitialTodos,
+        addTodo,
+        deleteTodo,
+        updateTodo,
+        error,
+        setError,
+      }}
     >
       {children}
     </TodoContext.Provider>

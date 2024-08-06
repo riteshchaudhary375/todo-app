@@ -6,7 +6,7 @@ import { useContext } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 import WelcomeMessage from "./WelcomeMessage";
 
-const TodoItems = () => {
+const TodoItems = ({ setError }) => {
   const { todoList, addInitialTodos } = useContext(TodoContext);
   // console.log(todoList);
 
@@ -25,7 +25,10 @@ const TodoItems = () => {
         // addInitialTodos([]);
         setFetching(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        // setError(err.message);
+      });
 
     // The useEffect Hook Cleanup
     // it will clean up any calls in backend like, timer, api calling,...
@@ -52,6 +55,7 @@ const TodoItems = () => {
             id={item._id}
             name={item.todoName}
             date={item.dueDate}
+            setError={setError}
           />
         ))}
     </div>

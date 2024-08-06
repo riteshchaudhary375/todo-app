@@ -5,23 +5,29 @@ import { FaEdit } from "react-icons/fa";
 import styles from "./TodoItem.module.css";
 import { TodoContext } from "../store/todo-items-store";
 
-const TodoItem = ({ id, name, date }) => {
+const TodoItem = ({ id, name, date, setError }) => {
   const { deleteTodo } = useContext(TodoContext);
   // console.log(todoItem);
 
   const handleDeleteButton = async (todoId) => {
+    setError("");
+
     try {
       const res = await fetch(`/api/v1/deleteTodo/${todoId}`, {
         method: "DELETE",
-      });
-      // .then(() => deleteTodo())
-      // .catch((err) => console.log(err));
+      })
+        // .then(() => deleteTodo())
+        .catch((err) => {
+          console.log(err);
+          setError(err.message);
+        });
 
       // console.log(res);
 
       deleteTodo(todoId);
     } catch (error) {
       console.log(error);
+      setError(error.message);
     }
   };
 
