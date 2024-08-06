@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import todoRoutes from "./routes/todo.route.js";
 import dotenv from "dotenv";
+import path from "path";
 
 dotenv.config();
 
@@ -14,7 +15,19 @@ mongoose
     console.log(error);
   });
 
+// for finding path dynamically
+const __dirname = path.resolve();
+
+// an express app
 const app = express();
+
+// defining directory of folder client statically
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+// from that static folder path, finding 'index.html' file and sending to client to render first
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 
 app.use(express.json());
 
