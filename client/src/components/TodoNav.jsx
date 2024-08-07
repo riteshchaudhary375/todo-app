@@ -4,7 +4,7 @@ import { TodoContext } from "../store/todo-items-store";
 
 const TodoNav = () => {
   const { todoList } = useContext(TodoContext);
-  //   console.log(todoList);
+  // console.log(todoList);
 
   return (
     <>

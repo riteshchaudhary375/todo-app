@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import todoRoutes from "./routes/todo.route.js";
 import dotenv from "dotenv";
-import path from "path";
+// import path from "path";
 
 dotenv.config();
 
@@ -20,6 +20,7 @@ const __dirname = path.resolve();
 
 // an express app
 const app = express();
+app.use(express.json());
 
 // defining directory of folder client statically
 app.use(express.static(path.join(__dirname, "/client/dist")));
@@ -28,8 +29,6 @@ app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
-
-app.use(express.json());
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
