@@ -14,12 +14,12 @@ const TodoItems = ({ setError }) => {
 
   // Fetching initialTodos
   const fetchingInitialTodos = async () => {
-    setFetching(true);
-
     const controller = new AbortController();
     const signal = controller.signal;
 
     try {
+      setFetching(true);
+
       const res = await fetch("/api/v1/getTodos", { signal });
       const data = await res.json();
 
