@@ -15,10 +15,7 @@ const TodoItems = ({ setError }) => {
   useEffect(() => {
     setFetching(true);
 
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    fetch("/api/v1/getTodos", { signal })
+    fetch("/api/v1/getTodos")
       .then((res) => res.json())
       .then((data) => {
         addInitialTodos(data.todos);
@@ -29,13 +26,6 @@ const TodoItems = ({ setError }) => {
         console.log(err);
         // setError(err.message);
       });
-
-    // The useEffect Hook Cleanup
-    // it will clean up any calls in backend like, timer, api calling,...
-    // like clean up 'clock' while moving another component.
-    return () => {
-      controller.abort();
-    };
   }, []);
 
   return (
