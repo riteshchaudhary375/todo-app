@@ -12,47 +12,38 @@ const TodoItems = ({ setError }) => {
 
   const [fetching, setFetching] = useState(false);
 
-  useEffect(() => {
+  // Fetching initialTodos
+  const fetchingInitialTodos = async () => {
     setFetching(true);
 
     const controller = new AbortController();
     const signal = controller.signal;
 
-    var responseClone;
-    fetch("/api/v1/getTodos", { signal })
-      .then((res) => {
-        responseClone = res.clone();
-        return res.json();
-      })
-      .then(
-        (data) => {
-          addInitialTodos(data.todos);
-          // addInitialTodos([]);
-          setFetching(false);
-        },
-        function (rejectionReason) {
-          console.log(
-            "Error parsing JSON from response:",
-            rejectionReason,
-            responseClone
-          );
-          responseClone.text();
-        }
-      )
-      .then(function (bodyText) {
-        console.log("Received the following instead of valid JSON:", bodyText); // 6
-      })
-      .catch((err) => {
-        console.log(err);
-        // setError(err.message);
-      });
+    try {
+      const res = await fetch("/api/v1/getTodos", { signal });
+      const data = await res.json();
 
-    // The useEffect Hook Cleanup
-    // it will clean up any calls in backend like, timer, api calling,...
-    // like clean up 'clock' while moving another component.
-    return () => {
-      controller.abort();
-    };
+      const todos = data.todos;
+
+      // console.log(todos);
+
+      addInitialTodos(todos);
+      setFetching(false);
+
+      // The useEffect Hook Cleanup
+      // it will clean up any calls in backend like, timer, api calling,...
+      // like clean up 'clock' while moving another component.
+      return () => {
+        controller.abort();
+      };
+    } catch (error) {
+      console.log(error);
+      setFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchingInitialTodos();
   }, []);
 
   return (
@@ -62,19 +53,20 @@ const TodoItems = ({ setError }) => {
         <div className="col-4">Due date</div>
         <div className="col-2">Actions</div>
       </div>
+
       <hr className={styles.horizontalLine} />
+
       {fetching && <LoadingSpinner />}
       {!fetching && todoList.length === 0 && <WelcomeMessage />}
-      {!fetching &&
-        todoList.map((item) => (
-          <TodoItem
-            key={item._id}
-            id={item._id}
-            name={item.todoName}
-            date={item.dueDate}
-            setError={setError}
-          />
-        ))}
+      {todoList.map((item) => (
+        <TodoItem
+          key={item._id}
+          id={item._id}
+          name={item.todoName}
+          date={item.dueDate}
+          setError={setError}
+        />
+      ))}
     </div>
   );
 };
