@@ -37,12 +37,13 @@ const TodoItems = ({ setError }) => {
         },{signal}); */
       const data = await res.json();
 
+      setFetching(false);
+
       const todos = data.todos;
 
       // console.log(todos);
 
       addInitialTodos(todos);
-      setFetching(false);
 
       // The useEffect Hook Cleanup
       // it will clean up any calls in backend like, timer, api calling,...
