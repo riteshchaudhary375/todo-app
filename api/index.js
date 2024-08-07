@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import todoRoutes from "./routes/todo.route.js";
 import dotenv from "dotenv";
-// import path from "path";
+import path from "path";
 
 dotenv.config();
 
