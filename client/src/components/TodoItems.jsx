@@ -15,12 +15,29 @@ const TodoItems = ({ setError }) => {
   useEffect(() => {
     setFetching(true);
 
+    var responseClone;
     fetch("/api/v1/getTodos")
-      .then((res) => res.json())
-      .then((data) => {
-        // addInitialTodos(data.todos);
-        addInitialTodos([]);
-        setFetching(false);
+      .then((res) => {
+        responseClone = res.clone();
+        return res.json();
+      })
+      .then(
+        (data) => {
+          addInitialTodos(data.todos);
+          // addInitialTodos([]);
+          setFetching(false);
+        },
+        function (rejectionReason) {
+          console.log(
+            "Error parsing JSON from response:",
+            rejectionReason,
+            responseClone
+          );
+          responseClone.text();
+        }
+      )
+      .then(function (bodyText) {
+        console.log("Received the following instead of valid JSON:", bodyText); // 6
       })
       .catch((err) => {
         console.log(err);
