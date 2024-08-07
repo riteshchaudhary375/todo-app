@@ -14,13 +14,22 @@ const TodoItems = ({ setError }) => {
 
   // Fetching initialTodos
   const fetchingInitialTodos = async () => {
-    const controller = new AbortController();
-    const signal = controller.signal;
+    /*  const controller = new AbortController();
+    const signal = controller.signal; */
 
     try {
       setFetching(true);
 
-      const res = await fetch("/api/v1/getTodos", { signal });
+      const res = await fetch("/api/v1/getTodos", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      /* const res = await fetch("/api/v1/getTodos", {
+        method: 'GET',
+        headers: {
+        'Content-Type': 'application/json',
+        },{signal}); */
       const data = await res.json();
 
       const todos = data.todos;
@@ -33,9 +42,9 @@ const TodoItems = ({ setError }) => {
       // The useEffect Hook Cleanup
       // it will clean up any calls in backend like, timer, api calling,...
       // like clean up 'clock' while moving another component.
-      return () => {
+      /* return () => {
         controller.abort();
-      };
+      }; */
     } catch (error) {
       console.log(error);
       setFetching(false);
