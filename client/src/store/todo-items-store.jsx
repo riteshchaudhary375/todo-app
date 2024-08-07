@@ -46,9 +46,7 @@ const TodoContextProvider = ({ children }) => {
   const addInitialTodos = (todos) => {
     dispatchTodoList({
       type: "ADD_INITIAL_TODOS",
-      payload: {
-        todos,
-      },
+      payload: todos,
     });
   };
 
