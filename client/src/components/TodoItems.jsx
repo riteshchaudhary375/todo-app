@@ -21,9 +21,14 @@ const TodoItems = ({ setError }) => {
       setFetching(true);
 
       const res = await fetch("/api/v1/getTodos", {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      /* const res = await fetch("/api/v1/getTodos", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      });
+      }); */
 
       /* const res = await fetch("/api/v1/getTodos", {
         method: 'GET',
