@@ -21,8 +21,8 @@ const TodoItems = ({ setError }) => {
     fetch("/api/v1/getTodos", { signal })
       .then((res) => res.json())
       .then((data) => {
-        addInitialTodos(data.todos);
-        // addInitialTodos([]);
+        // addInitialTodos(data.todos);
+        addInitialTodos([]);
         setFetching(false);
       })
       .catch((err) => {
