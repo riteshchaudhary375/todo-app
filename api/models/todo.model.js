@@ -12,6 +12,10 @@ const todoSchema = new mongoose.Schema(
       required: false,
       unique: false,
     },
+    complete: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
