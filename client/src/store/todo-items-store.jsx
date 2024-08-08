@@ -7,7 +7,7 @@ export const TodoContext = createContext({
   addTodo: () => {},
   deleteTodo: () => {},
   updateTodo: () => {},
-  // fetching: false,
+  toggleTodo: () => {},
   error: "",
   setError: "",
 });
@@ -27,6 +27,8 @@ const todoListReducer = (currTodoList, action) => {
     newTodoList = action.payload.todos;
   } else if (action.type === "UPDATE_TODO") {
     newTodoList = [...currTodoList, action.payload];
+  } else if (action.type === "TOGGLE_TODO") {
+    newTodoList = [...currTodoList];
   }
   return newTodoList;
 };
@@ -40,7 +42,6 @@ const TodoContextProvider = ({ children }) => {
     []
   );
 
-  // const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
 
   const addInitialTodos = (todos) => {
@@ -93,83 +94,16 @@ const TodoContextProvider = ({ children }) => {
     });
   };
 
-  // Fetching initialTodos
-
-  /*   const fetchingInitialTodos = async () => {
-    setFetching(true);
-
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    try {
-      const res = await fetch("/api/v1/getTodos", { signal });
-      const data = await res.json();
-
-      const todos = data.todos;
-
-      // console.log(todos);
-
-      addInitialTodos(todos);
-      setFetching(false);
-
-      // The useEffect Hook Cleanup
-      // it will clean up any calls in backend like, timer, api calling,...
-      // like clean up 'clock' while moving another component.
-      return () => {
-        controller.abort();
-      };
-    } catch (error) {
-      console.log(error);
-      setFetching(false);
-    }
+  // Toggle Todo function
+  const toggleTodo = (updatedTodoStatus) => {
+    dispatchTodoList({
+      type: "TOGGLE_TODO",
+      payload: {
+        updatedTodoStatus,
+      },
+    });
+    // console.log("Checked box...");
   };
-
-  useEffect(() => {
-    fetchingInitialTodos();
-  }, []); */
-
-  /*  useEffect(() => {
-    setFetching(true);
-
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    var responseClone;
-    fetch("/api/v1/getTodos", { signal })
-      .then((res) => {
-        responseClone = res.clone();
-        return res.json();
-      })
-      .then(
-        (data) => {
-          addInitialTodos(data.todos);
-          // addInitialTodos([]);
-          setFetching(false);
-        },
-        function (rejectionReason) {
-          console.log(
-            "Error parsing JSON from response:",
-            rejectionReason,
-            responseClone
-          );
-          responseClone.text();
-        }
-      )
-      .then(function (bodyText) {
-        console.log("Received the following instead of valid JSON:", bodyText); // 6
-      })
-      .catch((err) => {
-        console.log(err);
-        // setError(err.message);
-      });
-
-    // The useEffect Hook Cleanup
-    // it will clean up any calls in backend like, timer, api calling,...
-    // like clean up 'clock' while moving another component.
-    return () => {
-      controller.abort();
-    };
-  }, []); */
 
   return (
     <TodoContext.Provider
@@ -179,7 +113,7 @@ const TodoContextProvider = ({ children }) => {
         addTodo,
         deleteTodo,
         updateTodo,
-        // fetching,
+        toggleTodo,
         error,
         setError,
       }}

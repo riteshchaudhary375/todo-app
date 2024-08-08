@@ -1,13 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import styles from "./TodoItem.module.css";
 import { TodoContext } from "../store/todo-items-store";
 
-const TodoItem = ({ id, name, date, setError }) => {
-  const { deleteTodo } = useContext(TodoContext);
+const TodoItem = ({ id, name, date, todoStatus, setError }) => {
+  const { deleteTodo, toggleTodo } = useContext(TodoContext);
   // console.log(todoItem);
+
+  const [newStatus, setNewStatus] = useState("");
+  // console.log(newStatus);
 
   const handleDeleteButton = async (todoId) => {
     setError("");
@@ -31,11 +34,53 @@ const TodoItem = ({ id, name, date, setError }) => {
     }
   };
 
+  // State for toggle
+  const handleToggleChange = (e) => {
+    setNewStatus(e.target.checked);
+  };
+
+  // Handle Toggle-box
+  const handleToggleBox = async (todoId) => {
+    setError("");
+    try {
+      const res = await fetch(`/api/v1/toggleTodo/${todoId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          complete: newStatus,
+        }),
+      })
+        .then((res) => res.json())
+        .then((updatedTodoStatus) => {
+          toggleTodo(updatedTodoStatus);
+          // console.log(updatedTodoStatus);
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(err.message);
+        });
+
+      toggleTodo();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <div className="container">
-      <div className="row marginRow">
+      <div className={`row marginRow ${styles.rowBox}`}>
+        <div className={`col-1 ${styles.wrapperCheckbox}`}>
+          <input
+            className={styles.toggleCheckbox}
+            type="checkbox"
+            defaultChecked={todoStatus}
+            onChange={handleToggleChange}
+            onClick={() => handleToggleBox(id)}
+            title="Done?"
+          />
+        </div>
         <div className="col-6">{name}</div>
-        <div className="col-4">{date}</div>
+        <div className="col-3">{date}</div>
         <div className={`col-2  ${styles.itemButton}`}>
           <Link to={`/edit-todo/${id}`}>
             <button

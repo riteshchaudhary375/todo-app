@@ -13,59 +13,48 @@ const TodoItems = ({ setError }) => {
   const [fetching, setFetching] = useState(false);
 
   // Fetching initialTodos
-  const fetchingInitialTodos = async () => {
-    /*  const controller = new AbortController();
-    const signal = controller.signal; */
+  useEffect(() => {
+    setFetching(true);
+
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     try {
-      setFetching(true);
-
-      const res = await fetch("/api/v1/getTodos", {
-        headers: {
-          Accept: "application/json",
-        },
-      });
-      /* const res = await fetch("/api/v1/getTodos", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }); */
-
-      /* const res = await fetch("/api/v1/getTodos", {
-        method: 'GET',
-        headers: {
-        'Content-Type': 'application/json',
-        },{signal}); */
+      /* 
+      const res = await fetch("/api/v1/getTodos", { signal });
       const data = await res.json();
-
-      setFetching(false);
-
       const todos = data.todos;
+      addInitialTodos(todos); 
+      setFetching(false);
+      */
 
-      // console.log(todos);
-
-      addInitialTodos(todos);
+      fetch("/api/v1/getTodos", { signal })
+        .then((res) => res.json())
+        .then((data) => {
+          addInitialTodos(data.todos);
+          setFetching(false);
+        })
+        .catch((err) => console.log(err.message));
 
       // The useEffect Hook Cleanup
       // it will clean up any calls in backend like, timer, api calling,...
       // like clean up 'clock' while moving another component.
-      /* return () => {
+      return () => {
+        console.log("Abort Controller: Cleaning up useEffect");
         controller.abort();
-      }; */
+      };
     } catch (error) {
       console.log(error);
       setFetching(false);
     }
-  };
-
-  useEffect(() => {
-    fetchingInitialTodos();
   }, []);
 
   return (
     <div className={styles.itemsContainer}>
       <div className={`row marginRow ${styles.tableHead}`}>
+        <div className="col-1"></div>
         <div className="col-6">Todo name</div>
-        <div className="col-4">Due date</div>
+        <div className="col-3">Due date</div>
         <div className="col-2">Actions</div>
       </div>
 
@@ -73,15 +62,17 @@ const TodoItems = ({ setError }) => {
 
       {fetching && <LoadingSpinner />}
       {!fetching && todoList.length === 0 && <WelcomeMessage />}
-      {todoList.map((item) => (
-        <TodoItem
-          key={item._id}
-          id={item._id}
-          name={item.todoName}
-          date={item.dueDate}
-          setError={setError}
-        />
-      ))}
+      {!fetching &&
+        todoList.map((item, index) => (
+          <TodoItem
+            key={index}
+            id={item._id}
+            name={item.todoName}
+            date={item.dueDate}
+            todoStatus={item.complete}
+            setError={setError}
+          />
+        ))}
     </div>
   );
 };
