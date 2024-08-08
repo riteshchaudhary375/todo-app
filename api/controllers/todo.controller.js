@@ -25,7 +25,8 @@ export const postTodo = async (req, res, next) => {
 
 export const getTodos = async (req, res, next) => {
   try {
-    const todos = await Todo.find();
+    // find all and sort in descending order
+    const todos = await Todo.find().sort({ createdAt: -1 });
 
     const totalTodos = await Todo.countDocuments();
 
@@ -73,6 +74,32 @@ export const getTodo = async (req, res, next) => {
     const singleTodo = await Todo.findById(req.params.todoId);
 
     res.status(200).json(singleTodo);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const toggleTodo = async (req, res, next) => {
+  const id = req.params.todoId;
+
+  try {
+    const todoRef = await Todo.findById(id);
+
+    const todo = await Todo.findOneAndUpdate(
+      // 1st option, find by params id
+      {
+        _id: req.params.todoId,
+      },
+      // 2nd option, then take action
+      { complete: !todoRef.complete },
+      { new: true }
+    );
+
+    await todo.save();
+
+    res
+      .status(200)
+      .json({ success: true, message: "Todo updated success", todo });
   } catch (error) {
     next(error);
   }
