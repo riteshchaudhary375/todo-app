@@ -5,12 +5,14 @@ import { FaEdit } from "react-icons/fa";
 import styles from "./TodoItem.module.css";
 import { TodoContext } from "../store/todo-items-store";
 
-const TodoItem = ({ id, name, date, todoStatus, setError }) => {
+const TodoItem = ({ id, name, date, items, todoStatus, setError }) => {
   const { deleteTodo, toggleTodo } = useContext(TodoContext);
   // console.log(todoItem);
 
   const [newStatus, setNewStatus] = useState("");
   // console.log(newStatus);
+  const [todoChecked, setTodoChecked] = useState([]);
+  // console.log(todoChecked);
 
   const handleDeleteButton = async (todoId) => {
     setError("");
@@ -37,6 +39,8 @@ const TodoItem = ({ id, name, date, todoStatus, setError }) => {
   // State for toggle
   const handleToggleChange = (e) => {
     setNewStatus(e.target.checked);
+    setTodoChecked(e.target.checked);
+    // console.log(e.target.checked);
   };
 
   // Handle Toggle-box
@@ -54,13 +58,12 @@ const TodoItem = ({ id, name, date, todoStatus, setError }) => {
         .then((updatedTodoStatus) => {
           toggleTodo(updatedTodoStatus);
           // console.log(updatedTodoStatus);
+          // location.reload()
         })
         .catch((err) => {
           console.log(err);
           setError(err.message);
         });
-
-      toggleTodo();
     } catch (error) {
       setError(error.message);
     }
@@ -79,7 +82,16 @@ const TodoItem = ({ id, name, date, todoStatus, setError }) => {
             title="Done?"
           />
         </div>
-        <div className="col-6">{name}</div>
+
+        <div
+          className={`col-6 ${
+            items.complete === true || todoChecked === true
+              ? "text-decoration-line-through"
+              : ""
+          }`}
+        >
+          {name}
+        </div>
         <div className="col-3">{date}</div>
         <div className={`col-2  ${styles.itemButton}`}>
           <Link to={`/edit-todo/${id}`}>

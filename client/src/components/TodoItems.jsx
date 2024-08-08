@@ -32,6 +32,7 @@ const TodoItems = ({ setError }) => {
         .then((res) => res.json())
         .then((data) => {
           addInitialTodos(data.todos);
+          // setTodoChecked(data.todos);
           setFetching(false);
         })
         .catch((err) => console.log(err.message));
@@ -71,6 +72,7 @@ const TodoItems = ({ setError }) => {
             date={item.dueDate}
             todoStatus={item.complete}
             setError={setError}
+            items={item}
           />
         ))}
     </div>
