@@ -42,7 +42,7 @@ const TodoContextProvider = ({ children }) => {
     []
   );
 
-  // console.log("List:", todoList);
+  console.log("List:", todoList.length);
 
   const [fetching, setFetching] = useState(false);
   // const [initialData, setInitialData] = useState({});
@@ -155,7 +155,7 @@ const TodoContextProvider = ({ children }) => {
   useEffect(() => {
     fetchData();
     // addInitialTodos(initialData);
-  }, []);
+  }, [todoList.length]);
 
   return (
     <TodoContext.Provider
