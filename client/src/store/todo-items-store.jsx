@@ -8,6 +8,7 @@ export const TodoContext = createContext({
   deleteTodo: () => {},
   updateTodo: () => {},
   toggleTodo: () => {},
+  fetching: false,
   error: "",
   setError: "",
 });
@@ -15,7 +16,6 @@ export const TodoContext = createContext({
 // Reducer Function
 const todoListReducer = (currTodoList, action) => {
   // console.log(currTodoList);
-
   let newTodoList = currTodoList;
   if (action.type === "DELETE_TODO") {
     newTodoList = currTodoList.filter(
@@ -42,6 +42,7 @@ const TodoContextProvider = ({ children }) => {
     []
   );
 
+  const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
 
   const addInitialTodos = (todos) => {
@@ -51,8 +52,7 @@ const TodoContextProvider = ({ children }) => {
     });
   };
 
-  /* 
-  // Method-1
+  /* Method-1 addTodo
 
   const addTodo = (name, date) => {
     dispatchTodoList({
@@ -105,6 +105,47 @@ const TodoContextProvider = ({ children }) => {
     // console.log("Checked box...");
   };
 
+  // Fetching initialTodos
+  const fetchData = async () => {
+    setFetching(true);
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+    try {
+      /* 
+      const res = await fetch("/api/v1/getTodos", { signal });
+      const data = await res.json();
+      const todos = data.todos;
+      addInitialTodos(todos); 
+      setFetching(false);
+      */
+
+      await fetch("/api/v1/getTodos", { signal })
+        .then((res) => res.json())
+        .then((data) => {
+          addInitialTodos(data.todos);
+          // setTodoChecked(data.todos);
+          setFetching(false);
+        })
+        .catch((err) => console.log(err.message));
+
+      // The useEffect Hook Cleanup
+      // it will clean up any calls in backend like, timer, api calling,...
+      // like clean up 'clock' while moving another component.
+      return () => {
+        console.log("Abort Controller: Cleaning up useEffect");
+        controller.abort();
+      };
+    } catch (error) {
+      console.log(error);
+      setFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <TodoContext.Provider
       value={{
@@ -114,6 +155,7 @@ const TodoContextProvider = ({ children }) => {
         deleteTodo,
         updateTodo,
         toggleTodo,
+        fetching,
         error,
         setError,
       }}
