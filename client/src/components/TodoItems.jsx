@@ -13,7 +13,7 @@ const TodoItems = ({ setError }) => {
   const [fetching, setFetching] = useState(false);
 
   // Fetching initialTodos
-  useEffect(() => {
+  useEffect( () => {
     setFetching(true);
 
     const controller = new AbortController();
@@ -28,7 +28,7 @@ const TodoItems = ({ setError }) => {
       setFetching(false);
       */
 
-      fetch("/api/v1/getTodos", { signal })
+       fetch("/api/v1/getTodos", { signal })
         .then((res) => res.json())
         .then((data) => {
           addInitialTodos(data.todos);

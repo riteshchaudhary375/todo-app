@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import todoRoutes from "./routes/todo.route.js";
 import dotenv from "dotenv";
 import path from "path";
@@ -21,6 +22,7 @@ const __dirname = path.resolve();
 // an express app
 const app = express();
 app.use(express.json());
+app.use(bodyParser.json());
 
 // defining directory of folder client statically
 app.use(express.static(path.join(__dirname, "/client/dist")));
