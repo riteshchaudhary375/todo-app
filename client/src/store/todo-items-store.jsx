@@ -42,7 +42,11 @@ const TodoContextProvider = ({ children }) => {
     []
   );
 
+  // console.log("List:", todoList);
+
   const [fetching, setFetching] = useState(false);
+  // const [initialData, setInitialData] = useState({});
+  // console.log(initialData);
   const [error, setError] = useState("");
 
   const addInitialTodos = (todos) => {
@@ -123,13 +127,14 @@ const TodoContextProvider = ({ children }) => {
       await fetch("/api/v1/getTodos", { signal })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
 
-          if (!data.ok) {
+          /* if (!data.ok) {
             return console.log(data.message);
-          }
+          } */
 
           addInitialTodos(data.todos);
+          // setInitialData(data.todos);
           setFetching(false);
         })
         .catch((err) => console.log(err.message));
@@ -149,6 +154,7 @@ const TodoContextProvider = ({ children }) => {
 
   useEffect(() => {
     fetchData();
+    // addInitialTodos(initialData);
   }, []);
 
   return (
