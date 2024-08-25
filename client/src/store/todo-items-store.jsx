@@ -1,4 +1,5 @@
 import { createContext, useEffect, useReducer, useState } from "react";
+import { getInitialTodo } from "../api/index.js";
 
 // Create Context APi
 export const TodoContext = createContext({
@@ -42,11 +43,7 @@ const TodoContextProvider = ({ children }) => {
     []
   );
 
-  console.log("List:", todoList.length);
-
   const [fetching, setFetching] = useState(false);
-  // const [initialData, setInitialData] = useState({});
-  // console.log(initialData);
   const [error, setError] = useState("");
 
   const addInitialTodos = (todos) => {
@@ -110,52 +107,20 @@ const TodoContextProvider = ({ children }) => {
   };
 
   // Fetching initialTodos
-  const fetchData = async () => {
+  useEffect(() => {
     setFetching(true);
 
-    const controller = new AbortController();
-    const signal = controller.signal;
-    try {
-      /* 
-      const res = await fetch("/api/v1/getTodos", { signal });
-      const data = await res.json();
-      const todos = data.todos;
-      addInitialTodos(todos); 
-      setFetching(false);
-      */
-
-      await fetch("/api/v1/getTodos", { signal })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data);
-
-          /* if (!data.ok) {
-            return console.log(data.message);
-          } */
-
-          addInitialTodos(data.todos);
-          // setInitialData(data.todos);
-          setFetching(false);
-        })
-        .catch((err) => console.log(err.message));
-
-      // The useEffect Hook Cleanup
-      // it will clean up any calls in backend like, timer, api calling,...
-      // like clean up 'clock' while moving another component.
-      return () => {
-        console.log("Abort Controller: Cleaning up useEffect");
-        controller.abort();
-      };
-    } catch (error) {
-      console.log(error);
-      setFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-    // addInitialTodos(initialData);
-  }, [todoList.length]);
+    getInitialTodo()
+      .then((data) => {
+        // console.log(data);
+        addInitialTodos(data.todos);
+        setFetching(false);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setFetching(false);
+      });
+  }, []);
 
   return (
     <TodoContext.Provider
