@@ -24,7 +24,7 @@ const TodoItems = ({ setError }) => {
       {fetching && <LoadingSpinner />}
       {!fetching && todoList.length === 0 && <WelcomeMessage />}
       {!fetching &&
-        todoList &&
+        todoList.length > 0 &&
         todoList.map((item, index) => (
           <TodoItem
             key={index}
