@@ -8,7 +8,7 @@ export const TodoContext = createContext({
   deleteTodo: () => {},
   updateTodo: () => {},
   toggleTodo: () => {},
-  fetching,
+  fetching: false,
   error: "",
   setError: "",
 });
@@ -36,13 +36,7 @@ const todoListReducer = (currTodoList, action) => {
 // Context Provider Component
 const TodoContextProvider = ({ children }) => {
   // useReducer hook
-  const [todoList, dispatchTodoList] = useReducer(
-    todoListReducer,
-    // DEFAULT_TODO_LIST
-    []
-  );
-
-  console.log(todoList);
+  const [todoList, dispatchTodoList] = useReducer(todoListReducer, []);
 
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
@@ -109,11 +103,11 @@ const TodoContextProvider = ({ children }) => {
 
   // Fetching initialTodos
   const fetchData = async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     try {
       setFetching(true);
-
-      const controller = new AbortController();
-      const signal = controller.signal;
 
       const response = await fetch("/api/v1/getTodos", { signal });
       const data = await response.json();
@@ -122,6 +116,7 @@ const TodoContextProvider = ({ children }) => {
       console.log(data.todos);
 
       setFetching(false);
+
       addInitialTodos(data.todos);
 
       // The useEffect Hook Cleanup
