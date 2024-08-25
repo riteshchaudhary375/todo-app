@@ -1,5 +1,4 @@
 import { createContext, useEffect, useReducer, useState } from "react";
-import { getInitialTodo } from "../api/index.js";
 
 // Create Context APi
 export const TodoContext = createContext({
@@ -42,6 +41,8 @@ const TodoContextProvider = ({ children }) => {
     // DEFAULT_TODO_LIST
     []
   );
+
+  console.log(todoList);
 
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
@@ -107,19 +108,34 @@ const TodoContextProvider = ({ children }) => {
   };
 
   // Fetching initialTodos
-  useEffect(() => {
+  const fetchData = async () => {
     setFetching(true);
 
-    getInitialTodo()
-      .then((data) => {
-        // console.log(data);
-        addInitialTodos(data.todos);
-        setFetching(false);
-      })
-      .catch((err) => {
-        console.log(err.message);
-        setFetching(false);
-      });
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    try {
+      const response = await fetch("/api/v1/getTodos", { signal });
+      const data = await response.json();
+
+      addInitialTodos(data.todos);
+      setFetching(false);
+
+      // The useEffect Hook Cleanup
+      // it will clean up any calls in backend like, timer, api calling,...
+      // like clean up 'clock' while moving another component.
+      return () => {
+        console.log("Abort Controller: Cleaning up useEffect");
+        controller.abort();
+      };
+    } catch (err) {
+      console.log(err.message);
+      setFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
