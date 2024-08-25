@@ -114,12 +114,12 @@ const TodoContextProvider = ({ children }) => {
 
       const controller = new AbortController();
       const signal = controller.signal;
-      
+
       const response = await fetch("/api/v1/getTodos", { signal });
       const data = await response.json();
 
-      addInitialTodos(data.todos);
       setFetching(false);
+      addInitialTodos(data.todos);
 
       // The useEffect Hook Cleanup
       // it will clean up any calls in backend like, timer, api calling,...
