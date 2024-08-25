@@ -8,7 +8,7 @@ export const TodoContext = createContext({
   deleteTodo: () => {},
   updateTodo: () => {},
   toggleTodo: () => {},
-  fetching: false,
+  fetching,
   error: "",
   setError: "",
 });
@@ -117,6 +117,9 @@ const TodoContextProvider = ({ children }) => {
 
       const response = await fetch("/api/v1/getTodos", { signal });
       const data = await response.json();
+
+      console.log(data);
+      console.log(data.todos);
 
       setFetching(false);
       addInitialTodos(data.todos);
