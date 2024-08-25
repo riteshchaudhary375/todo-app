@@ -109,12 +109,12 @@ const TodoContextProvider = ({ children }) => {
 
   // Fetching initialTodos
   const fetchData = async () => {
-    setFetching(true);
-
-    const controller = new AbortController();
-    const signal = controller.signal;
-
     try {
+      setFetching(true);
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+      
       const response = await fetch("/api/v1/getTodos", { signal });
       const data = await response.json();
 
