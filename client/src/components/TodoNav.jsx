@@ -9,9 +9,9 @@ const TodoNav = () => {
   return (
     <>
       <div className="totalTodoAndcreateBtnDiv">
-        <button className="btn btn-warning badgeBtn">
-          Total Todo's:<span>{todoList.length}</span>
-        </button>
+        <span className="bg-warning rounded p-2">
+          Total Todo's: 4
+        </span>
 
         <Link to="/create-todo">
           <button className="btn btn-primary">Create Todo</button>

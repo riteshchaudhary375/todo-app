@@ -1,18 +1,5 @@
 import { createContext, useEffect, useReducer, useState } from "react";
 
-// Create Context APi
-export const TodoContext = createContext({
-  todoList: [],
-  addInitialTodos: () => {},
-  addTodo: () => {},
-  deleteTodo: () => {},
-  updateTodo: () => {},
-  toggleTodo: () => {},
-  fetching: false,
-  error: "",
-  setError: "",
-});
-
 const initialState = {
   todoList: [],
   addInitialTodos: () => {},
@@ -24,6 +11,20 @@ const initialState = {
   error: "",
   setError: "",
 };
+
+// Create Context APi
+export const TodoContext = createContext(null);
+/* export const TodoContext = createContext({
+  todoList: [],
+  addInitialTodos: () => {},
+  addTodo: () => {},
+  deleteTodo: () => {},
+  updateTodo: () => {},
+  toggleTodo: () => {},
+  fetching: false,
+  error: "",
+  setError: "",
+}); */
 
 // Reducer Function
 const todoListReducer = (currTodoList, action) => {
@@ -48,7 +49,12 @@ const todoListReducer = (currTodoList, action) => {
 // Context Provider Component
 const TodoContextProvider = ({ children }) => {
   // useReducer hook
-  const [todoList, dispatchTodoList] = useReducer(todoListReducer, []);
+  const [todoList, dispatchTodoList] = useReducer(
+    todoListReducer,
+    []
+  );
+
+  // console.log(todoList);
 
   const [fetching, setFetching] = useState(false);
   const [error, setError] = useState("");
