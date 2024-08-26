@@ -1,9 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import bodyParser from "body-parser";
-import cors from "cors";
-import todoRoutes from "./routes/todo.route.js";
 import dotenv from "dotenv";
+import todoRoutes from "./routes/todo.route.js";
 import path from "path";
 
 dotenv.config();
@@ -22,9 +20,14 @@ const __dirname = path.resolve();
 
 // an express app
 const app = express();
+
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(cors());
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
+});
+
+app.use("/api/v1", todoRoutes);
 
 // defining directory of folder client statically
 app.use(express.static(path.join(__dirname, "/client/dist")));
@@ -33,12 +36,6 @@ app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
-});
-
-app.use("/api/v1", todoRoutes);
 
 // middleware to handle error
 app.use((err, req, res, next) => {
