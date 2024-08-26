@@ -7,13 +7,12 @@ import LoadingSpinner from "./LoadingSpinner";
 import WelcomeMessage from "./WelcomeMessage";
 
 const TodoItems = ({ setError }) => {
-  // const { todoList, fetching } = useContext(TodoContext);
   const {
     todoList: { todos },
+    fetching,
   } = useContext(TodoContext);
-  // console.log("Todo List from TodoItems component: ", todoList);
-  // console.log("Todo List from TodoItems component: ", taskData);
-  console.log(todos);
+
+  // console.log(todos);
 
   return (
     <div className={styles.itemsContainer}>
@@ -26,21 +25,8 @@ const TodoItems = ({ setError }) => {
 
       <hr className={styles.horizontalLine} />
 
-      {/* {fetching && <LoadingSpinner />}
-      {!fetching && todoList.length === 0 && <WelcomeMessage />}
-      {!fetching &&
-        todoList.map((item, index) => (
-          <TodoItem
-            key={index}
-            id={item._id}
-            name={item.todoName}
-            date={item.dueDate}
-            todoStatus={item.complete}
-            setError={setError}
-            items={item}
-          />
-          ))} */}
-
+      {fetching && <LoadingSpinner />}
+      {!fetching && !todos && <WelcomeMessage />}
       {todos &&
         todos.map((item, index) => (
           <TodoItem
