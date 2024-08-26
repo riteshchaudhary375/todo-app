@@ -13,7 +13,7 @@ const initialState = {
 };
 
 // Create Context APi
-export const TodoContext = createContext();
+export const TodoContext = createContext(initialState);
 /* export const TodoContext = createContext({
   todoList: [],
   addInitialTodos: () => {},
@@ -163,6 +163,7 @@ const TodoContextProvider = ({ children }) => {
 
         addInitialTodos(data);
 
+        // console.log("Fetched data", data);
         // console.log("Fetching true", data);
         setFetching(false);
         // console.log("Fetching false", data);
