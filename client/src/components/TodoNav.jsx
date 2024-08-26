@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import { TodoContext } from "../store/todo-items-store";
 
 const TodoNav = () => {
-  const { todoList } = useContext(TodoContext);
-  // console.log(todoList);
+  const taskDetail = useContext(TodoContext);
+  // console.log(taskDetail);
 
   return (
     <>
       <div className="totalTodoAndcreateBtnDiv">
         <span className="bg-warning rounded p-2">
-          Total Todo's: 4
+          Total Todo's: <b>{taskDetail.todoList.totalTodos}</b>
         </span>
 
         <Link to="/create-todo">

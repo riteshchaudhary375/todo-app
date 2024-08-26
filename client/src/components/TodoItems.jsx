@@ -8,9 +8,12 @@ import WelcomeMessage from "./WelcomeMessage";
 
 const TodoItems = ({ setError }) => {
   // const { todoList, fetching } = useContext(TodoContext);
-  const taskData = useContext(TodoContext);
+  const {
+    todoList: { todos },
+  } = useContext(TodoContext);
   // console.log("Todo List from TodoItems component: ", todoList);
-  console.log("Todo List from TodoItems component: ", taskData);
+  // console.log("Todo List from TodoItems component: ", taskData);
+  console.log(todos);
 
   return (
     <div className={styles.itemsContainer}>
@@ -37,8 +40,9 @@ const TodoItems = ({ setError }) => {
             items={item}
           />
           ))} */}
-      {taskData &&
-        taskData.todoList.map((item, index) => (
+
+      {todos &&
+        todos.map((item, index) => (
           <TodoItem
             key={index}
             id={item._id}

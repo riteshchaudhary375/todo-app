@@ -13,7 +13,7 @@ const initialState = {
 };
 
 // Create Context APi
-export const TodoContext = createContext(null);
+export const TodoContext = createContext();
 /* export const TodoContext = createContext({
   todoList: [],
   addInitialTodos: () => {},
@@ -29,7 +29,7 @@ export const TodoContext = createContext(null);
 // Reducer Function
 const todoListReducer = (currTodoList, action) => {
   // console.log(currTodoList);
-  let newTodoList = currTodoList;
+  /*   let newTodoList = currTodoList;
   if (action.type === "DELETE_TODO") {
     newTodoList = currTodoList.filter(
       (item) => item._id !== action.payload.todoId
@@ -43,6 +43,37 @@ const todoListReducer = (currTodoList, action) => {
   } else if (action.type === "TOGGLE_TODO") {
     newTodoList = [...currTodoList];
   }
+  return newTodoList; */
+
+  let newTodoList = currTodoList;
+  switch (action.type) {
+    case "ADD_INITIAL_TODOS":
+      newTodoList = action.payload.todos;
+      break;
+
+    case "ADD_TODO":
+      newTodoList = [action.payload, ...currTodoList];
+      break;
+
+    case "UPDATE_TODO":
+      newTodoList = [...currTodoList, action.payload];
+      break;
+
+    case "DELETE_TODO":
+      newTodoList = currTodoList.filter(
+        (item) => item._id !== action.payload.todoId
+      );
+      break;
+
+    case "TOGGLE_TODO":
+      newTodoList = [...currTodoList];
+      break;
+
+    default:
+      console.log("No action found");
+      break;
+  }
+
   return newTodoList;
 };
 
@@ -51,7 +82,7 @@ const TodoContextProvider = ({ children }) => {
   // useReducer hook
   const [todoList, dispatchTodoList] = useReducer(
     todoListReducer,
-    []
+    initialState
   );
 
   // console.log(todoList);
@@ -128,14 +159,13 @@ const TodoContextProvider = ({ children }) => {
     fetch("/api/v1/getTodos", { signal })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
-        // console.log(data.todos);
-
         // addInitialTodos([]);
 
-        addInitialTodos(data.todos);
+        addInitialTodos(data);
 
+        // console.log("Fetching true", data);
         setFetching(false);
+        // console.log("Fetching false", data);
 
         // The useEffect Hook Cleanup
         // it will clean up any calls in backend like, timer, api calling,...
