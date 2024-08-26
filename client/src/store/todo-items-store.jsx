@@ -13,6 +13,18 @@ export const TodoContext = createContext({
   setError: "",
 });
 
+const initialState = {
+  todoList: [],
+  addInitialTodos: () => {},
+  addTodo: () => {},
+  deleteTodo: () => {},
+  updateTodo: () => {},
+  toggleTodo: () => {},
+  fetching: false,
+  error: "",
+  setError: "",
+};
+
 // Reducer Function
 const todoListReducer = (currTodoList, action) => {
   // console.log(currTodoList);
@@ -102,38 +114,35 @@ const TodoContextProvider = ({ children }) => {
   };
 
   // Fetching initialTodos
-  const fetchData = async () => {
+  useEffect(() => {
+    setFetching(true);
+
     const controller = new AbortController();
     const signal = controller.signal;
+    fetch("/api/v1/getTodos", { signal })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        // console.log(data.todos);
 
-    try {
-      setFetching(true);
+        // addInitialTodos([]);
 
-      const response = await fetch("/api/v1/getTodos", { signal });
-      const data = await response.json();
+        addInitialTodos(data.todos);
 
-      console.log(data);
-      console.log(data.todos);
+        setFetching(false);
 
-      setFetching(false);
-
-      addInitialTodos(data.todos);
-
-      // The useEffect Hook Cleanup
-      // it will clean up any calls in backend like, timer, api calling,...
-      // like clean up 'clock' while moving another component.
-      return () => {
-        console.log("Abort Controller: Cleaning up useEffect");
-        controller.abort();
-      };
-    } catch (err) {
-      console.log(err.message);
-      setFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
+        // The useEffect Hook Cleanup
+        // it will clean up any calls in backend like, timer, api calling,...
+        // like clean up 'clock' while moving another component.
+        return () => {
+          console.log("Abort Controller: Cleaning up useEffect");
+          controller.abort();
+        };
+      })
+      .catch((err) => {
+        console.log(err.message);
+        setFetching(false);
+      });
   }, []);
 
   return (

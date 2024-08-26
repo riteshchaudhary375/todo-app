@@ -22,7 +22,7 @@ const TodoItems = ({ setError }) => {
       <hr className={styles.horizontalLine} />
 
       {fetching && <LoadingSpinner />}
-      {!fetching && todoList.length === 0 && <WelcomeMessage />}
+      {/* {!fetching && todoList.length === 0 && <WelcomeMessage />} */}
       {!fetching &&
         todoList &&
         todoList.map((item, index) => (
